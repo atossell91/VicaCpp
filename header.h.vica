@@ -1,0 +1,10 @@
+#pragma once
+
+namespace @namespace@ {
+    class @classname@ {
+    private:
+        //  Private stuff here
+    public:
+        //  Public stuff here
+    };
+} // @namespace@

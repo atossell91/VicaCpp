@@ -1,0 +1,20 @@
+CMAKE_MINIMUM_REQUIRED_VERSION(VERSION @version@)
+
+project(@project@)
+
+set (SRC ${CMAKE_SOURCE_DIR}/src)
+set (INCLUDE ${CMAKE_SOURCE_DIR}/include)
+set (DEPS ${CMAKE_SOURCE_DIR}/deps)
+
+include_directories(
+    ${INCLUDE}
+)
+
+add_executable(@project@
+    ${SRC}/main.cpp
+    #ADD_CPP - DO NOT MODIFY THIS LINE
+)
+
+#target_link_libraries(@project@
+#    ${DEPS}/name/build/libVica.so
+#)
