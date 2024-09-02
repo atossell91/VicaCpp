@@ -59,16 +59,17 @@ def create_class(name: str, namespace: str):
     update_cmake(name)
 
 def main():
-    if len(sys.argv) < 1 or sys.argv[1] == 'create':
+    parent_dir_name: str = os.path.basename(os.getcwd())
+    if (len(sys.argv) < 2) or (sys.argv[1] == 'create'):
         
         if (len(os.listdir(current_dir_path)) > 0):
             print('Directory is not empty. Quitting.')
             return
         else:
-            current_dir: str = os.getcwd()
+            current_dir: str = parent_dir_name
             create_project(current_dir)
     
-    if sys.argv[1] == 'class':
+    elif sys.argv[1] == 'class':
     
         name: str = get_arg_value(sys.argv, '-name')
         if name is None:
@@ -77,7 +78,7 @@ def main():
         
         namespace: str = get_arg_value(sys.argv, '-namespace')
         if namespace is None:
-            namespace = name
+            namespace = parent_dir_name
         
         create_class(name, namespace)
 

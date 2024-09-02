@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED_VERSION(VERSION @version@)
+CMAKE_MINIMUM_REQUIRED(VERSION @version@)
 
 project(@project@)
 
