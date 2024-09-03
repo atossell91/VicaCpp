@@ -1,0 +1,7 @@
+#pragma once
+
+namespace @namespace@ {
+
+// Populate the namespace here
+
+} // @namespace@

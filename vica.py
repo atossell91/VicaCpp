@@ -33,6 +33,18 @@ def create_header(name: str, namespace: str):
     with open(f'./include/{name}.h', 'w') as file:
         file.write(header)
 
+def create_interface(name: str, namespace: str):
+    interface = FileFactories.create_interface(name, namespace)
+    
+    with open(f'./include/{name}.h', 'w') as file:
+        file.write(interface)
+
+def create_namespace(name: str):
+    namespace = FileFactories.create_namespace(name)
+    
+    with open(f'./include/{name}.h', 'w') as file:
+        file.write(namespace)
+
 def create_definition(name: str, namespace: str):
     definition = FileFactories.create_definitions(name, namespace)
     
@@ -68,6 +80,39 @@ def main():
         else:
             current_dir: str = parent_dir_name
             create_project(current_dir)
+            
+    elif sys.argv[1] == 'namespace':
+        name: str = get_arg_value(sys.argv, '-name')
+        if name is None:
+            print('Interface name not provided. Please provide a name with \'-name name\'')
+            return
+        
+        create_namespace(name)
+            
+    ## Duplicated code (see 'class' below)!
+    elif sys.argv[1] == 'header':
+        name: str = get_arg_value(sys.argv, '-name')
+        if name is None:
+            print('Class name not provided. Please provide a name with \'-name name\'')
+            return
+        
+        namespace: str = get_arg_value(sys.argv, '-namespace')
+        if namespace is None:
+            namespace = parent_dir_name
+        
+        create_header(name, namespace)
+            
+    elif sys.argv[1] == 'interface':
+        name: str = get_arg_value(sys.argv, '-name')
+        if name is None:
+            print('Interface name not provided. Please provide a name with \'-name name\'')
+            return
+        
+        namespace: str = get_arg_value(sys.argv, '-namespace')
+        if namespace is None:
+            namespace = parent_dir_name
+        
+        create_interface(name, namespace)
     
     elif sys.argv[1] == 'class':
     
