@@ -75,11 +75,13 @@ def main():
     if (len(sys.argv) < 2) or (sys.argv[1] == 'create'):
         
         if (len(os.listdir(current_dir_path)) > 0):
-            print('Directory is not empty. Quitting.')
-            return
-        else:
-            current_dir: str = parent_dir_name
-            create_project(current_dir)
+            choice: str = input('Directory is not empty. Enter \'ok\' to continue: ')
+            if (choice.lower() != 'ok'):
+                print ('Stopping')
+                return
+            
+        current_dir: str = parent_dir_name
+        create_project(current_dir)
             
     elif sys.argv[1] == 'namespace':
         name: str = get_arg_value(sys.argv, '-name')
