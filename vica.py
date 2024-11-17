@@ -28,12 +28,18 @@ def get_top_level_dir(max_jumps = 3):
     num_jumps: int = 1
     while num_jumps < max_jumps and not is_top_level(current_dir):
         current_dir = current_dir + '/..'
+        num_jumps = num_jumps + 1
 
     if num_jumps >= max_jumps:
         print(f'Could not find top-level directory in {max_jumps} hops')
         sys.exit(1)
 
     return current_dir
+
+def get_project_name(path: str):
+    abs_path: str = os.path.abspath(path)
+    dname: str = os.path.split(abs_path)[1]
+    return dname
 
 def create_folder_str(folder: str):
     if folder is None:
@@ -122,9 +128,9 @@ def get_namespace():
 def main():
     global current_dir_path
 
-    current_dir_path = get_top_level_dir()
+    current_dir_path = '.'
 
-    parent_dir_name: str = os.path.basename(os.getcwd())
+    parent_dir_name: str = get_project_name(current_dir_path)
     if (len(sys.argv) < 2) or (sys.argv[1] == 'create'):
         
         if (len(os.listdir(current_dir_path)) > 0):
@@ -135,8 +141,11 @@ def main():
             
         current_dir: str = parent_dir_name
         create_project(current_dir)
+        return
+
+    current_dir_path = get_top_level_dir()
     
-    elif sys.argv[1] == 'subdir':
+    if sys.argv[1] == 'subdir':
         name: str = get_name()
         
         if name is None:
