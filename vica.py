@@ -14,6 +14,27 @@ def get_arg_value(args, name):
     
     return None
 
+def is_top_level(dir):
+    return os.path.exists(f'{dir}/src') and os.path.exists(f'{dir}/include')
+
+def get_top_level_dir(max_jumps = 3):
+    current_dir: str = '.'
+
+    if is_top_level(current_dir):
+        return current_dir
+    
+    current_dir = '..'
+
+    num_jumps: int = 1
+    while num_jumps < max_jumps and not is_top_level(current_dir):
+        current_dir = current_dir + '/..'
+
+    if num_jumps >= max_jumps:
+        print(f'Could not find top-level directory in {max_jumps} hops')
+        sys.exit(1)
+
+    return current_dir
+
 def create_folder_str(folder: str):
     if folder is None:
         return ''
@@ -38,15 +59,17 @@ def create_header(name: str, namespace: str, folder: str = None):
         
     folderStr: str = create_folder_str(folder)
     
-    with open(f'./include/{folderStr}{name}.h', 'w') as file:
+    with open(f'{current_dir_path}/include/{folderStr}{name}.h', 'w') as file:
         file.write(header)
 
 def create_interface(name: str, namespace: str, folder: str = None):
     interface = FileFactories.create_interface(name, namespace)
         
     folderStr: str = create_folder_str(folder)
+
+    dir: str = get_top_level_dir()
     
-    with open(f'./include/{folderStr}{name}.h', 'w') as file:
+    with open(f'{current_dir_path}/include/{folderStr}{name}.h', 'w') as file:
         file.write(interface)
 
 def create_namespace(name: str, folder: str = None):
@@ -54,7 +77,7 @@ def create_namespace(name: str, folder: str = None):
         
     folderStr: str = create_folder_str(folder)
     
-    with open(f'./include/{folderStr}{name}.h', 'w') as file:
+    with open(f'{current_dir_path}/include/{folderStr}{name}.h', 'w') as file:
         file.write(namespace)
 
 def create_definition(name: str, namespace: str, folder: str = None):
@@ -62,7 +85,7 @@ def create_definition(name: str, namespace: str, folder: str = None):
         
     folderStr: str = create_folder_str(folder)
     
-    with open(f'./src/{folderStr}{name}.cpp', 'w') as file:
+    with open(f'{current_dir_path}/src/{folderStr}{name}.cpp', 'w') as file:
         file.write(definition)
         
 def update_cmake(classname: str, folder: str = None):
@@ -70,7 +93,7 @@ def update_cmake(classname: str, folder: str = None):
         
     folderStr: str = create_folder_str(folder)
         
-    with open('./CMakeLists.txt', 'r') as infile:
+    with open(f'{current_dir_path}/CMakeLists.txt', 'r') as infile:
         content = infile.read(-1)
     
     content = content.replace(
@@ -78,7 +101,7 @@ def update_cmake(classname: str, folder: str = None):
         f'${{SRC}}/{folderStr}{classname}.cpp\n' +
         '    #ADD_CPP - DO NOT MODIFY THIS LINE')
     
-    with open("./CMakeLists.txt", 'w') as outfile:
+    with open(f"{current_dir_path}/CMakeLists.txt", 'w') as outfile:
         outfile.write(content)
         
 def create_class(name: str, namespace: str, folder: str):
@@ -97,6 +120,10 @@ def get_namespace():
     return get_arg_value(sys.argv, '-namespace')
 
 def main():
+    global current_dir_path
+
+    current_dir_path = get_top_level_dir()
+
     parent_dir_name: str = os.path.basename(os.getcwd())
     if (len(sys.argv) < 2) or (sys.argv[1] == 'create'):
         
