@@ -72,12 +72,17 @@ def create_interface(name: str, namespace: str) -> str:
     return build_file_text(vf)
 
 
-def create_definitions(name: str, namespace: str) -> str:
+def create_definitions(name: str, namespace: str, folder: str = None) -> str:
     content: str = load_file_text(definition_file_path)
     vf = parse_file(content)
     
     # Set variables here
     vf.variables['classname'] = name
     vf.variables['namespace'] = namespace
+    
+    if not folder is None:
+        vf.variables['folder'] = f'{folder}/'
+    else:
+        vf.variables['folder'] = ''
     
     return build_file_text(vf)

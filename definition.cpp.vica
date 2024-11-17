@@ -1,4 +1,4 @@
-#include "@classname@.h"
+#include "@folder@@classname@.h"
 
 using namespace @namespace@;
 
