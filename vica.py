@@ -144,6 +144,7 @@ def main():
         return
 
     current_dir_path = get_top_level_dir()
+    parent_dir_name = get_project_name(current_dir_path)
     
     if sys.argv[1] == 'subdir':
         name: str = get_name()
