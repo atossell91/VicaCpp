@@ -130,7 +130,7 @@ def get_namespace():
     namespace: str = get_namespace_arg()
     if namespace is None:
         namespace = 'NS' + parent_dir_name
-    return namespace
+    return namespacez``
 
 def main():
     global current_dir_path
