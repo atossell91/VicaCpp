@@ -4,6 +4,7 @@ import sys
 
 current_dir_path = '.'
 vica_path = os.__file__
+parent_dir_name = None
 
 def get_arg_value(args, name):
     for i in range(len(args)):
@@ -122,15 +123,22 @@ def get_name():
 def get_dest_folder():
     return get_arg_value(sys.argv, '-folder')
 
-def get_namespace():
+def get_namespace_arg():
     return get_arg_value(sys.argv, '-namespace')
+
+def get_namespace():
+    namespace: str = get_namespace_arg()
+    if namespace is None:
+        namespace = 'NS' + parent_dir_name
+    return namespace
 
 def main():
     global current_dir_path
+    global parent_dir_name
 
     current_dir_path = '.'
 
-    parent_dir_name: str = get_project_name(current_dir_path)
+    parent_dir_name = get_project_name(current_dir_path)
     if (len(sys.argv) < 2) or (sys.argv[1] == 'create'):
         
         if (len(os.listdir(current_dir_path)) > 0):
@@ -180,8 +188,6 @@ def main():
         
         namespace: str = get_namespace()
         folder: str = get_dest_folder()
-        if namespace is None:
-            namespace = parent_dir_name
         
         create_header(name, namespace, folder)
             
@@ -193,8 +199,6 @@ def main():
         
         folder: str = get_dest_folder()
         namespace: str = get_namespace()
-        if namespace is None:
-            namespace = parent_dir_name
         
         create_interface(name, namespace, folder)
     
@@ -207,8 +211,6 @@ def main():
         
         folder: str = get_dest_folder()
         namespace: str = get_namespace()
-        if namespace is None:
-            namespace = parent_dir_name
         
         create_class(name, namespace, folder)
 
