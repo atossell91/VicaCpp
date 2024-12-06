@@ -213,6 +213,8 @@ def main():
         namespace: str = get_namespace()
         
         create_class(name, namespace, folder)
+    else:
+        print('File type not provided. Nothing has been created.')
 
 if __name__ == '__main__':
     main()
