@@ -1,6 +1,7 @@
 import FileFactories
 import os
 import sys
+import subprocess
 
 current_dir_path = '.'
 vica_path = os.__file__
@@ -213,6 +214,16 @@ def main():
         namespace: str = get_namespace()
         
         create_class(name, namespace, folder)
+
+    elif sys.argv[1] == 'build':
+        build_cmd : str = [
+            'cmake',
+            '--build',
+            os.path.join(current_dir_path, 'build')
+        ]
+        subprocess.run(build_cmd)
+        pass
+
     else:
         print('File type not provided. Nothing has been created.')
 
